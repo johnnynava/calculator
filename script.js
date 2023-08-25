@@ -78,7 +78,7 @@ decimal.addEventListener("click", (e) => {
     if(!currentOperator && display.textContent.slice(-1).match(anyNumber) && !display.textContent.match(/\./)){
         display.textContent += ".";
     }
-    else if (currentOperator && secondNumber.slice(-1).match(/[0-9]/) && !secondNumber.match(/\./)){
+    else if (currentOperator && secondNumber.slice(-1).match(anyNumber) && !secondNumber.match(/\./)){
         display.textContent += ".";
         secondNumber += ".";
     }
