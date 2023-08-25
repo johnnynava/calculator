@@ -2,15 +2,18 @@ let firstNumber;
 let secondNumber;
 let operator;
 let currentOperator;
-let display = document.querySelector("#display");
 
-const anyNumber = /[0-9]/; 
+const anyNumber = /[0-9]/;
+const anyOperator = /[-\/*\+]/;
+const minusOrPlus = /[-\+]/;
+
 const numbers = document.querySelectorAll(".number");
 const equals = document.querySelector("#equals");
 const operators = document.querySelectorAll(".operator");
 const zero = document.querySelector("#zero");
 const decimal = document.querySelector("#decimal");
 const reset = document.querySelector("#reset");
+const display = document.querySelector("#display");
 const prevOperation = document.querySelector("#prevOperation");
 
 const add = (firstNumber,secondNumber) => firstNumber+secondNumber;
@@ -37,8 +40,8 @@ const operate = function(){
     }
 }
 
-numbers.forEach((button) => button.addEventListener("click", function(e){
-    let buttonPressed = e.target.textContent
+const handleNumberPressed = (input) =>{
+    let buttonPressed = input;
     if (display.textContent==="0"){
         display.textContent = buttonPressed;
     }
@@ -50,10 +53,10 @@ numbers.forEach((button) => button.addEventListener("click", function(e){
         if(currentOperator && !secondNumber){secondNumber = buttonPressed}
         else if(currentOperator){secondNumber += buttonPressed}
     }
-}));
+};
 
-operators.forEach((button) => button.addEventListener("click", (e) => {
-    let buttonPressed = e.target.textContent
+const handleOperatorsPressed = (input) => {
+    let buttonPressed = input;
     if (buttonPressed === " - "){
         if (display.textContent == "0"){
             display.textContent = "-";
@@ -64,14 +67,14 @@ operators.forEach((button) => button.addEventListener("click", (e) => {
             display.textContent = display.textContent+"-";
             return;
         }
-    }
+    };
     if (!currentOperator){
         currentOperator = buttonPressed;
         firstNumber = display.textContent;
         display.textContent += currentOperator;
     } 
     else if (secondNumber){
-        prevOperation.textContent = display.textContent;
+        prevOperation.textContent = display.textContent+" =";
         firstNumber = operate();
         if (!Number.isInteger(firstNumber)){firstNumber = firstNumber.toFixed(2)};
         secondNumber = 0;
@@ -82,9 +85,9 @@ operators.forEach((button) => button.addEventListener("click", (e) => {
         currentOperator = buttonPressed;
         display.textContent = display.textContent.slice(0,-3)+buttonPressed;
     }
-}))
+};
 
-decimal.addEventListener("click", (e) => {
+const handleDecimalPressed = () => {
     if(!currentOperator && display.textContent.slice(-1).match(anyNumber) && !display.textContent.match(/\./)){
         display.textContent += ".";
     }
@@ -92,29 +95,50 @@ decimal.addEventListener("click", (e) => {
         display.textContent += ".";
         secondNumber += ".";
     }
-})
+};
 
-reset.addEventListener("click", (e) => {
+const handleResetPressed = () => {
     display.textContent = 0;
     firstNumber = "";
     secondNumber = "";
     currentOperator = "";
     prevOperation.textContent = "";
-})
+};
 
-equals.addEventListener("click", (e) => {
+const handleEqualPressed = () => {
     if (secondNumber){
-        prevOperation.textContent = display.textContent;
+        prevOperation.textContent = display.textContent+" =";;
         firstNumber = operate();
         if (!Number.isInteger(firstNumber)){firstNumber = firstNumber.toFixed(2)};
         secondNumber = 0;
         display.textContent = firstNumber;
         currentOperator = "";
     }
-})
+}
 
-window.addEventListener("keydown", function(e){
-    if (e.key = anyNumber){
-        
+numbers.forEach((button) => button.addEventListener("click", (e) => handleNumberPressed(e.target.textContent)));
+operators.forEach((button) => button.addEventListener("click", (e) => {handleOperatorsPressed(e.target.textContent)}));
+decimal.addEventListener("click", handleDecimalPressed);
+reset.addEventListener("click", handleResetPressed);
+equals.addEventListener("click", handleEqualPressed);
+
+window.addEventListener("keydown", (e) => {
+    if (e.key.match(anyNumber)){
+        handleNumberPressed(e.key);
     }
-})
+    else if (e.key === "r" || e.key === "R"){
+        handleResetPressed();
+    }
+    else if (e.key.match("=")){
+        handleEqualPressed();
+    }
+    else if (e.key === "."){
+        handleDecimalPressed();
+    }
+    else if (e.key.match(anyOperator)){
+        if (e.key === "*"){buttonPressed = " x "}
+        else if (e.key === "/"){buttonPressed = " ÷ "}
+        else if (e.key.match(minusOrPlus)){buttonPressed = " " + e.key + " "};
+        handleOperatorsPressed(buttonPressed);
+    }
+});
