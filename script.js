@@ -1,9 +1,20 @@
 let firstNumber;
 let secondNumber;
 let operator;
-const button = document.querySelectorAll("button");
+let currentOperator;
+
+const anyNumber = /[0-9]/; 
+const anyNumberButZero = /[1-9]/
+const anyOperator = /[-x÷\+]/;
+const anyOperatorButNegative = /[x÷\+]/;
+
+const numbers = document.querySelectorAll(".number");
 const equals = document.querySelector("#equals");
+const operators = document.querySelectorAll(".operator");
+const zero = document.querySelector("#zero");
+const decimal = document.querySelector("#decimal");
 const reset = document.querySelector("#reset");
+
 let display = document.querySelector("#display");
 
 const add = (firstNumber,secondNumber) => firstNumber+secondNumber;
@@ -11,56 +22,89 @@ const subtract = (firstNumber,secondNumber) => firstNumber-secondNumber;
 const multiply = (firstNumber,secondNumber) => firstNumber*secondNumber;
 const divide = (firstNumber,secondNumber) => firstNumber/secondNumber;
 
-const operate = function(firstNumber,operator,secondNumber){
-    if (operator===" + "){return add(firstNumber,secondNumber)}
-    else if (operator===" - "){return subtract(firstNumber,secondNumber)}
-    else if (operator===" x "){return multiply(firstNumber,secondNumber)}
+const operate = function(){
+    firstNumber = +firstNumber;
+    secondNumber = +secondNumber;
+    if (currentOperator ===" + "){return add(firstNumber,secondNumber)}
+    else if (currentOperator ===" - "){return subtract(firstNumber,secondNumber)}
+    else if (currentOperator ===" x "){return multiply(firstNumber,secondNumber)}
     else return divide(firstNumber, secondNumber);
 };
 
-const inputToDisplay = (input) =>
-input.addEventListener("click", function(e){
-    display.textContent += e.target.textContent;
+numbers.forEach((button) => button.addEventListener("click", function(e){
+    let buttonPressed = e.target.textContent
+    if (display.textContent==="0"){
+        display.textContent = buttonPressed;
+    }
+    else {
+        display.textContent += buttonPressed;
+        if(currentOperator && !secondNumber){secondNumber = buttonPressed}
+        else if(currentOperator){secondNumber += buttonPressed}
+    }
+}));
 
-});
-button.forEach(inputToDisplay);
+operators.forEach((button) => button.addEventListener("click", (e) => {
+    let buttonPressed = e.target.textContent
+    if (buttonPressed === " - "){
+        if (display.textContent == "0"){
+            display.textContent = "-";
+            return;
+        }
+        else if (currentOperator && !secondNumber){
+            secondNumber = "-";
+            display.textContent = display.textContent+"-";
+            return;
+        }
+    }
+    if (!currentOperator){
+        currentOperator = buttonPressed;
+        firstNumber = display.textContent;
+        display.textContent += currentOperator;
+    } 
+    else if (secondNumber){
+        firstNumber = operate();
+        if (!Number.isInteger(firstNumber)){firstNumber = firstNumber.toFixed(2)};
+        secondNumber = 0;
+        display.textContent = firstNumber + buttonPressed;
+        currentOperator = buttonPressed;  
+    }
+    else if (currentOperator && !secondNumber){
+        currentOperator = buttonPressed;
+        display.textContent = display.textContent.slice(0,-3)+buttonPressed;
+    }
+}))
+
+decimal.addEventListener("click", (e) => {
+    if(!currentOperator && display.textContent.slice(-1).match(anyNumber) && !display.textContent.match(/\./)){
+        display.textContent += ".";
+    }
+    else if (currentOperator && secondNumber.slice(-1).match(/[0-9]/) && !secondNumber.match(/\./)){
+        display.textContent += ".";
+        secondNumber += ".";
+    }
+})
+
+reset.addEventListener("click", (e) => {
+    display.textContent = 0;
+    firstNumber = "";
+    secondNumber = "";
+    currentOperator = "";
+})
 
 
+// si textContent es igual (=):
 
+//
 
-// hacer que display sea 0
+//1. y se presiona luego de solo un negativo al principio o luego 
+//del operator  (sin secondNumber), regresar ERROR
 
-// si textContent es reset, resetear a 0
-
-// si no hay nada en display (0) y el e.target.textContent 
-//es un número o "-", reemplazar 0 por el textContent
-
-// si hay solo números o un negativo al principio y el e.target.textContent es
-// un número, añadir a display
-
-// si el display es solo negativo y el e.target.textContent es un operador,
-// no hacer nada.
-
-//si el display es 0 y el textContent es un operador que no sea negativo,
-//usar 0 como firstNumber y el operador como operator
-
-//si el display es un número (puede tener negativo), y el textContent es
-//un operador, usar el display como firstNumber y el operador como operator
-
-//si se presiona igual luego de solo un negativo al principio o luego 
-//del operator (sin secondNumber), regresar ERROR
-
-//si no hay nada luego del operator, y el textContent es - o un número, añadir a
+//2. y se presiona luego de solo firstNumber, regresar el mismo número al
 //display
 
-//si se presiona un operator luego del operator o un solo negativo, no hacer nada
+//3. y se presiona luego de un número que va luego del operator (secondNumber), 
+//regresar resultado
 
-//si se presiona igual luego de solo firstNumber, regresar el mismo número al
-//display
+// si textContent es cero (0):
 
-//si se presiona igual luego de un número que va luego del operator, regresar
-//resultado
-
-//si se presiona un operator luego de un número que va luego del operator,
-//regresar resultado + operator de textContent 
-
+//1. si hay solo números, un negativo o un operator, añadir a display
