@@ -11,6 +11,7 @@ const operators = document.querySelectorAll(".operator");
 const zero = document.querySelector("#zero");
 const decimal = document.querySelector("#decimal");
 const reset = document.querySelector("#reset");
+const prevOperation = document.querySelector("#prevOperation");
 
 const add = (firstNumber,secondNumber) => firstNumber+secondNumber;
 const subtract = (firstNumber,secondNumber) => firstNumber-secondNumber;
@@ -70,6 +71,7 @@ operators.forEach((button) => button.addEventListener("click", (e) => {
         display.textContent += currentOperator;
     } 
     else if (secondNumber){
+        prevOperation.textContent = display.textContent;
         firstNumber = operate();
         if (!Number.isInteger(firstNumber)){firstNumber = firstNumber.toFixed(2)};
         secondNumber = 0;
@@ -97,13 +99,22 @@ reset.addEventListener("click", (e) => {
     firstNumber = "";
     secondNumber = "";
     currentOperator = "";
+    prevOperation.textContent = "";
 })
 
 equals.addEventListener("click", (e) => {
     if (secondNumber){
+        prevOperation.textContent = display.textContent;
         firstNumber = operate();
         if (!Number.isInteger(firstNumber)){firstNumber = firstNumber.toFixed(2)};
         secondNumber = 0;
         display.textContent = firstNumber;
+        currentOperator = "";
+    }
+})
+
+window.addEventListener("keydown", function(e){
+    if (e.key = anyNumber){
+        
     }
 })
