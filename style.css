@@ -5,6 +5,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    flex-direction: column;
 }
 
 .calculatorBody {
@@ -28,6 +29,7 @@ body {
     padding: 0 10px;
     flex-grow: 0;
     padding-bottom: 5px;
+    overflow: hidden;
 }
 
 button {
@@ -38,6 +40,7 @@ button {
     width: 90px;
     margin-bottom: 10px;
     border-radius: 10px;
+    font-size: 25px;
 }
 
 #display {
@@ -61,4 +64,19 @@ button {
 .buttons {
     margin-top: 20px;
     text-align: center;
+}
+
+#id {
+    
+}
+
+a {
+    color: #F0F6F7FF;
+    text-decoration: none;
+    font-size: 20px;
+    margin-top: 80px;
+}
+
+a:hover {
+    color: #669DB3FF;
 }
