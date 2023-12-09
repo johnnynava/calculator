@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "Digital-7";
+    src: url(fonts/digital-7.ttf);
+}
+
 body {
-    background-color: #FF4F58FF;
+    background-color: rgb(57, 49, 95);
     color: #F0F6F7FF;
     display: flex;
     justify-content: center;
@@ -13,19 +18,20 @@ body {
     padding: 8.31px;
     height: 600px;
     width: 400px;
-    border: 3px solid #669DB3FF;
+    border: 3px solid #rgb(38, 41, 42);;
     border-radius: 25px;
 }
 
 .screen {
-    background-color: #F0F6F7FF;
-    color: rgb(124, 113, 105);
+    background-color: rgb(38, 41, 42);
+    font-family: "Digital-7";
+    color: rgb(17, 117, 70);
     border-radius: 10px;
     text-align: right;
     height: 110px;
     width: 360px;
     margin: 8.31px;
-    border: 3px solid #669DB3FF;
+    border: 3px solid #rgb(38, 41, 42);;
     padding: 0 10px;
     flex-grow: 0;
     padding-bottom: 5px;
@@ -33,7 +39,7 @@ body {
 }
 
 button {
-    background-color: #669DB3FF;
+    background-color: rgb(38, 41, 42);
     color: #F0F6F7FF;
     border: none;
     height: 80px;
@@ -41,6 +47,10 @@ button {
     margin-bottom: 10px;
     border-radius: 10px;
     font-size: 25px;
+}
+
+button:hover{
+    cursor:pointer;
 }
 
 #display {
@@ -74,5 +84,5 @@ a {
 }
 
 a:hover {
-    color: #669DB3FF;
+    color: rgb(38, 41, 42);;
 }

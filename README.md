@@ -1,3 +1,3 @@
-Calculator that works with keys or clicks
+# Calculator
 
-Next time I will use Flex more extensively
+[Live Demo](https://johnnynava.github.io/calculator/)
